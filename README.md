@@ -31,4 +31,4 @@ Getting Started
 
   [1]: http://eligrey.com/demos/hotlink.js/
   [2]: https://raw.github.com/eligrey/hotlink.js/master/hotlink.min.js
-  [2]: https://raw.github.com/eligrey/hotlink.js/master/hotlink.js
+  [3]: https://raw.github.com/eligrey/hotlink.js/master/hotlink.js
