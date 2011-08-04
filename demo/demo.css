@@ -1,0 +1,73 @@
+html {
+	background-color: #DDD;
+}
+body {
+	width: 900px;
+	margin: 2em auto;
+	font-family: Verdana, Helvetica, Arial, sans-serif;
+	box-shadow: 0 0 5px #000;
+	box-shadow: 0 0 10px 2px rgba(0, 0, 0, .5);
+	padding: 7px 25px;
+	background-color: #FFF;
+}
+h1, h2, h3, h4, h5, h6 {
+	font-family: Georgia, "Times New Roman", serif;
+}
+section {
+	margin-top: 40px;
+}
+img {
+	/* for keeping the page length stable */
+	border: 3px solid transparent;
+}
+code {
+	font-family: Consolas, Lucida Console, monospace;
+	font-size: 12px;
+}
+#css p {
+	width: 70%;
+}
+.css-code {
+	margin: 1em;
+	border: 1px solid #BFBFBF;
+	float: left;
+	width: 30%;
+	min-width: 30%;
+	max-width: 97%;
+	white-space: pre;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	resize: horizontal;
+}
+.css-file {
+	color: #555;
+	float: right;
+}
+.css-prop-enabled {
+	float: right;
+	visibility: hidden;
+	position: relative;
+	z-index: 1;
+}
+.css-code:hover .css-prop-enabled {
+	visibility: visible;
+}
+.css-prop {
+	text-overflow: ellipsis;
+}
+.css-prop.disabled {
+	text-decoration: line-through;
+}
+.css-prop-name {
+	color: #C80000;
+}
+.css-swatch {
+	display: inline-block;
+	vertical-align: baseline;
+	margin-left: 1px;
+	margin-right: 2px;
+	margin-bottom: -1px;
+	width: 1em;
+	height: 1em;
+	border: 1px solid rgba(128, 128, 128, 0.6);
+}

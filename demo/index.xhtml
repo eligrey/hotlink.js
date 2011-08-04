@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US-x-Hixie">
+<head>
+<meta charset="utf-8"/>
+<title>hotlink.js demo</title>
+<link rel="stylesheet" type="text/css" href="demo.css"/>
+<style id="img-style" type="text/css">
+img {
+	border: 3px dashed red;
+}
+</style>
+</head>
+<body>
+<h1><a href="https://github.com/eligrey/hotlink.js">hotlink.js</a> demo</h1>
+<p>hotlink.js makes it possible to undetectably hotlink images.</p>
+<section>
+<h2>Without hotlink.js</h2>
+<p><img src="http://eligrey.com/demos/hotlink.js/referrer.php" width="512" height="32"/></p>
+</section>
+<section>
+<h2>With hotlink.js</h2>
+<p><img data-src="http://eligrey.com/demos/hotlink.js/referrer.php" width="512" height="32"/></p>
+</section>
+<section id="css">
+<pre class="css-code"><code><a class="css-file" href="view-source:http://eligrey.com/demos/hotlink.js/">demo.xhtml:7</a>img {
+    <input class="css-prop-enabled" type="checkbox" checked=""/><span class="css-prop" title="border: 3px dashed red;"><span class="css-prop-name">border</span>: 3px dashed <span class="css-swatch" style="background-color:red" title="Click to change color format"/><span class="css-color">red</span>;</span>
+}</code></pre>
+<p>hotlink.js is a simple drop-in that won't require you to make any modifications to your CSS. This CSS works fine on both images.</p>
+<script type="application/ecmascript"><![CDATA[
+(function() {
+	var
+		  $ = function(css_selector) {
+		  	return document.querySelector(css_selector);
+		}
+		, stylesheet = $("#img-style").sheet
+		, prop = $(".css-prop")
+		, prop_enabled = $(".css-prop-enabled")
+		, swatch = $(".css-swatch")
+		, text = $(".css-color").firstChild
+		, i = 1
+		, formats = ["red", "#F00", "#FF0000", "rgb(255, 0, 0)", "hsl(0, 100%, 50%)"]
+		, cycle_format = function() {
+			if (i === formats.length) {
+				i = 0;
+			}
+			text.data = formats[i++];
+			prop.title = prop.textContent;
+		}
+	;
+	swatch.addEventListener("click", cycle_format, false);
+	prop_enabled.addEventListener("change", function() {
+		stylesheet.disabled = !prop_enabled.checked;
+		prop.style.textDecoration = prop_enabled.checked ? "none" : "line-through";
+	}, false);
+}());
+]]></script>
+</section>
+<script type="application/ecmascript" async="" src="../hotlink.min.js"/>
+</body>
+</html>
