@@ -22,24 +22,6 @@
 		, firefox = ~user_agent.indexOf("Gecko/")
 		, ie = ~user_agent.indexOf("MSIE")
 		, opera = view.opera
-		, get_script_loc = function() {
-			try {
-				0();
-			} catch (error) {
-				var loc, replacer = function (stack, matched_loc) {
-					loc = matched_loc;
-				};
-				if ("fileName" in error) { // Firefox
-					loc = error.fileName;
-				} else if ("stacktrace" in error) { // Opera
-					error.stacktrace.replace(/Line \d+ of .+ script (.*)/gm, replacer);
-				} else if ("stack" in error) { // WebKit
-					error.stack.replace(/at (.*)/gm, replacer);
-					loc = loc.replace(/:\d+:\d+$/, ""); // remove line number
-				}
-				return loc;
-			}
-		}
 		, click = function(elt) {
 			if (elt.click) {
 				elt.click();
@@ -124,7 +106,7 @@
 	// Firefox & IE have a problem with setting document.referrer for about:blank, so
 	// that can't be used. /robots.txt and /favicon.ico usually load fast enough.
 	if (firefox) {
-		test_link_url = get_script_loc();
+		test_link_url = (new Error).fileName;
 	} else if (ie) {
 		// even if I could get the script location in IE, it'd trigger a download
 		test_link_url = "/favicon.ico";
