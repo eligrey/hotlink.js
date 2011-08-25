@@ -13,10 +13,9 @@ Supported Browsers
 
 * Google Chrome 12+
 * Safari 5.1+
-* Opera 11.50+
 
-†Firefox 5+ and Internet Explorer 9+ will fall back to a normal image without a
-hidden referrer.
+†Firefox 5+, Internet Explorer 9+, and Opera 11.50+ will fall back to a normal image
+without a hidden referrer.
 
 Getting Started
 ---------------
@@ -26,6 +25,24 @@ Getting Started
    to hotlink on your site.
 3. Include `<script type="application/ecmascript" async="" src="hotlink.js"></script>`
    right before `</body>`.
+
+API
+---
+
+If you are using dynamically inserted images, you'll want to use the API to hotlink them.
+
+    void hotlink(HTMLImageElement image)
+
+`image` must be in an active document.
+
+### Example
+
+    var image = new Image;
+    image.width = 300;
+    image.height = 100;
+    image.setAttribute("data-src", "http://example.com/image.png");
+    document.documentElement.appendChild(image);
+    hotlink(image);
 
 ![Tracking image](//in.getclicky.com/212712ns.gif)
 

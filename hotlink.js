@@ -1,6 +1,6 @@
 /*
  * hotlink.js
- * 2011-08-04
+ * 2011-08-24
  * 
  * By Eli Grey, http://eligrey.com
  * Licensed under the X11/MIT License
@@ -11,7 +11,7 @@
 
 /*global self, document*/
 
-(function(view, document) {
+var hotlink = (function(view, document) {
 	"use strict";
 	var
 		  HTML_NS = "http://www.w3.org/1999/xhtml"
@@ -48,7 +48,7 @@
 			}
 			return old_val;
 		}
-		, hotlink = function(img) {
+		, frame_img = function(img) {
 			var
 				  parent = img.parentNode
 				// I make the assumption that you're not using namespaces in your CSS
@@ -62,14 +62,14 @@
 			;
 			if (firefox || opera) {
 				// Firefox & Opera will need 16px padding once they support noreferrer
-				// There is no other way to do this with feature detection
+				// There is no other way to do this without feature detection
 				width += 16;
 				height += 16;
 			}
 			attrs = img.attributes;
 			i = attrs.length;
 			while (i--) {
-				// copy @style, @class, etc.
+				// copy attributes
 				attribute = attrs[i];
 				attr(container, attribute.name, attribute.value);
 				attr(img, attribute.name, false);
@@ -87,48 +87,69 @@
 			}
 			click(link);
 		}
+		, ready = false
+		, ready_queue = []
+		, noreferrer_supported = false
+		, hotlink = function(img) {
+			if (ready) {
+				if (noreferrer_supported) {
+					frame_img(img);
+				} else {
+					// remap data-src to src
+					attr(img, "src", attr(img, "data-src", false));
+				}
+			} else {
+				ready_queue.push(img);
+			}
+		}
 		, test_frame = append(doc_elt, create_elt(HTML_NS, "iframe"))
 		, test_link = create_elt(HTML_NS, "a", test_frame.contentDocument)
 		, test_link_url = "about:blank"
+		, on_ready = function() {
+			ready = true;
+			noreferrer_supported = test_frame.contentDocument.referrer === "";
+			var
+				  i = 0
+				, len = ready_queue.length
+			;
+			for (; i < len; i++) {
+				hotlink(ready_queue[i]);
+			}
+		}
 		, style = create_elt(HTML_NS, "style")
 		, imgs = document.querySelectorAll("img[data-src]")
 		, i = imgs.length
 		, img
 	;
+	while (i--) {
+		img = imgs[i];
+		if (img.namespaceURI === HTML_NS) {
+			hotlink(img);
+		}
+	}
 	// I'm not using CSSOM insertRule becuase WebKit & Opera don't support @declarations
 	append(style, document.createTextNode(
 		  "@namespace'" + HOTLINK_NS + "';img{display:inline-block;vertical-align:bottom}"
 	));
 	append(doc_elt, style);
-	test_frame.style.overflow = "hidden";
+	test_frame.style.visibility = "hidden";
 	test_frame.style.height = test_frame.style.border = 0;
 	test_link.rel = "noreferrer";
 	// Firefox & IE have a problem with setting document.referrer for about:blank, so
-	// that can't be used. /robots.txt and /favicon.ico usually load fast enough.
+	// I use the current script's URL instead.
 	if (firefox) {
 		test_link_url = (new Error).fileName;
 	} else if (ie) {
-		// even if I could get the script location in IE, it'd trigger a download
+		// Even if I could get the script location in IE, it'd trigger a download,
+		// so I have to load either /favicon.ico or /robots.txt
 		test_link_url = "/favicon.ico";
 	}
 	test_link.href = test_link_url;
-	test_frame.addEventListener("load", function() {
-		while (i--) {
-			img = imgs[i];
-			if (img.namespaceURI === HTML_NS) {
-				if (test_frame.contentDocument.referrer === "") {
-					// rel=noreferrer is supported
-					hotlink(img);
-				} else {
-					// remap data-src to src
-					attr(img, "src", attr(img, "data-src", false));
-				}
-			}
-		}
-	}, false);
+	test_frame.addEventListener("load", on_ready, false);
 	// Firefox & IE are buggy with link.click() so you need to set the src manually
 	if (firefox || ie) {
 		test_frame.src = test_link.href;
 	}
 	click(test_link);
+	return hotlink;
 }(self, document));
