@@ -136,12 +136,8 @@ var hotlink = (function(view, document) {
 	test_frame.style.height = test_frame.style.border = 0;
 	test_link.rel = "noreferrer";
 	// Firefox & IE have a problem with setting document.referrer for about:blank, so
-	// I use the current script's URL instead.
-	if (firefox) {
-		test_link_url = (new Error).fileName;
-	} else if (ie) {
-		// Even if I could get the script location in IE, it'd trigger a download,
-		// so I have to load either /favicon.ico or /robots.txt
+	// I use the /favicon.ico instead.
+	if (firefox || ie) {
 		test_link_url = "/favicon.ico";
 	}
 	test_link.href = test_link_url;
