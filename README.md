@@ -29,11 +29,9 @@ Getting Started
 API
 ---
 
-If you are using dynamically inserted images, you'll want to use the API to hotlink them.
-
     void hotlink(HTMLImageElement image)
 
-`image` must be in an active document.
+If you are using dynamically inserted images, you'll want to use the API to hotlink them.
 
 ### Example
 
