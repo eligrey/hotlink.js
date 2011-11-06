@@ -136,9 +136,9 @@ var hotlink = (function(view, document) {
 	test_frame.style.height = test_frame.style.border = 0;
 	test_link.rel = "noreferrer";
 	// Firefox & IE have a problem with setting document.referrer for about:blank, so
-	// I use the /favicon.ico instead.
+	// I use the /robots.txt instead.
 	if (firefox || ie) {
-		test_link_url = "/favicon.ico";
+		test_link_url = "/robots.txt";
 	}
 	test_link.href = test_link_url;
 	test_frame.addEventListener("load", on_ready, false);
