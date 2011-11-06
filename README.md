@@ -37,9 +37,7 @@ If you are using dynamically inserted images, you'll want to use the API to hotl
 
 ### Example
 
-    var image = new Image;
-    image.width = 300;
-    image.height = 100;
+    var image = new Image(300, 100);
     image.setAttribute("data-src", "http://example.com/image.png");
     document.documentElement.appendChild(image);
     hotlink(image);
