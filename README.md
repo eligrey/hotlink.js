@@ -4,12 +4,6 @@ hotlink.js
 hotlink.js makes it possible to hide referrer information for hotlinked images. It is an
 easy-to-use drop-in script that requires very few changes to your webpages.
 
-Disclaimer
-----------
-
-This library is only to be used for research purposes and I am not responsible for anything
-you make with this library.
-
 Demo
 ----
 
@@ -46,6 +40,12 @@ If you are using dynamically inserted images, you'll want to use the API to hotl
     image.setAttribute("data-src", "http://example.com/image.png");
     document.documentElement.appendChild(image);
     hotlink(image);
+
+Disclaimer
+----------
+
+This library is only to be used for research purposes and I am not responsible for anything
+you make with this library.
 
 ![Tracking image](//in.getclicky.com/212712ns.gif)
 
