@@ -1,7 +1,8 @@
 hotlink.js
 ==========
 
-hotlink.js makes it possible to undetectably hotlink images.
+hotlink.js makes it possible to hide referrer information for hotlinked images. It is an
+easy-to-use drop-in script that requires very few changes to your webpages.
 
 Demo
 ----
