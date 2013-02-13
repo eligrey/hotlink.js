@@ -47,7 +47,7 @@ Disclaimer
 This library is only to be used for research purposes and I am not responsible for anything
 you make with this library.
 
-![Tracking image](//in.getclicky.com/212712ns.gif)
+![Tracking image](https://in.getclicky.com/212712ns.gif)
 
   [1]: http://eligrey.com/demos/hotlink.js/
   [2]: https://raw.github.com/eligrey/hotlink.js/master/hotlink.min.js
