@@ -3,8 +3,8 @@
  * 2011-08-24
  * 
  * By Eli Grey, http://eligrey.com
- * Licensed under the X11/MIT License
- *   See LICENSE.md
+ * Licensed under the MIT License
+ *   See https://github.com/eligrey/hotlink.js/blob/master/LICENSE.md
  */
 
 /*! @source http://purl.eligrey.com/github/hotlink.js/blob/master/hotlink.js */
