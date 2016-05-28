@@ -12,7 +12,7 @@ if (isset($_SERVER['HTTP_REFERER'])) {
     $textcolor = imagecolorallocate($im, 0, 0xff, 0xff);
 }
 
-imagettftext($im, 13, 0, 5, 22, $textcolor, "/usr/share/fonts/truetype/ttf-dejavu/DejaVuSans-Bold.ttf", $string);
+imagettftext($im, 13, 0, 5, 22, $textcolor, "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", $string);
 
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
