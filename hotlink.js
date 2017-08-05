@@ -1,6 +1,6 @@
 /*
  * hotlink.js
- * 2011-08-24
+ * 2017-08-04
  * 
  * By Eli Grey, http://eligrey.com
  * Licensed under the MIT License
@@ -55,9 +55,9 @@ var hotlink = (function(view, document) {
 				, container = parent.insertBefore(create_elt(HOTLINK_NS, "img"), img)
 				, frame = append(container, create_elt(HTML_NS, "iframe"))
 				, link = create_elt(HTML_NS, "a", frame.contentDocument)
-				, src = attr(img, "data-src", false) // img.dataset.src
-				, width = +attr(img, "width", false)
-				, height = +attr(img, "height", false)
+				, src = attr(img, "data-src") // img.dataset.src
+				, width = +attr(img, "width")
+				, height = +attr(img, "height")
 				, attrs, i, attribute
 			;
 			if (firefox || opera) {
@@ -72,7 +72,6 @@ var hotlink = (function(view, document) {
 				// copy attributes
 				attribute = attrs[i];
 				attr(container, attribute.name, attribute.value);
-				attr(img, attribute.name, false);
 			}
 			parent.removeChild(img);
 			frame.style.verticalAlign = "bottom";
@@ -90,20 +89,23 @@ var hotlink = (function(view, document) {
 		, ready = false
 		, ready_queue = []
 		, noreferrer_supported = false
+		, referrerPolicy_supported = "referrerPolicy" in new Image
 		, hotlink = function(img) {
-			if (ready) {
-				if (noreferrer_supported) {
+			if (referrerPolicy_supported) {
+				img.referrerPolicy = "no-referrer";
+				img.src = attr(img, "data-src", false);
+			} else if (ready) {
+				 if (noreferrer_supported) {
 					frame_img(img);
 				} else {
 					// remap data-src to src
-					attr(img, "src", attr(img, "data-src", false));
+					img.src = attr(img, "data-src", false);
 				}
 			} else {
 				ready_queue.push(img);
 			}
 		}
-		, test_frame = append(doc_elt, create_elt(HTML_NS, "iframe"))
-		, test_link = create_elt(HTML_NS, "a", test_frame.contentDocument)
+		, test_frame, test_link
 		, test_link_url = "about:blank"
 		, on_ready = function() {
 			ready = true;
@@ -121,17 +123,26 @@ var hotlink = (function(view, document) {
 		, i = imgs.length
 		, img
 	;
+
 	while (i--) {
 		img = imgs[i];
 		if (img.namespaceURI === HTML_NS) {
 			hotlink(img);
 		}
 	}
+
+	if (referrerPolicy_supported) {
+		return;
+	}
+
 	// I'm not using CSSOM insertRule becuase WebKit & Opera don't support @declarations
 	append(style, document.createTextNode(
 		  "@namespace'" + HOTLINK_NS + "';img{display:inline-block;vertical-align:bottom}"
 	));
 	append(doc_elt, style);
+
+	test_frame = append(doc_elt, create_elt(HTML_NS, "iframe"));
+	test_link = create_elt(HTML_NS, "a", test_frame.contentDocument);
 	test_frame.style.visibility = "hidden";
 	test_frame.style.height = test_frame.style.border = 0;
 	test_link.rel = "noreferrer";
