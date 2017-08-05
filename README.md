@@ -12,11 +12,14 @@ You can try out the [online demo][1] to see hotlink.js in action.
 Supported Browsers
 ------------------
 
-* Google Chrome 12+
+* Chrome 12+
+* Edge
+* Firefox
 * Safari 5.1+
+* Internet Explorer 11+
 
-†Firefox 5+, Internet Explorer 9+, and Opera 11.50+ will fall back to a normal image
-without a hidden referrer.
+Unlisted browsers may still be supported. Unsupported browsers will fall back
+to a normal image without a hidden referrer.
 
 Getting Started
 ---------------
