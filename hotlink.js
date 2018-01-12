@@ -1,6 +1,6 @@
 /*
  * hotlink.js
- * 2017-08-04
+ * 2018-01-12
  * 
  * By Eli Grey, http://eligrey.com
  * Licensed under the MIT License
@@ -132,7 +132,7 @@ var hotlink = (function(view, document) {
 	}
 
 	if (referrerPolicy_supported) {
-		return;
+		return hotlink;
 	}
 
 	// I'm not using CSSOM insertRule becuase WebKit & Opera don't support @declarations
@@ -147,9 +147,13 @@ var hotlink = (function(view, document) {
 	test_frame.style.height = test_frame.style.border = 0;
 	test_link.rel = "noreferrer";
 	// Firefox & IE have a problem with setting document.referrer for about:blank, so
-	// I use the /robots.txt instead.
+	// I use /robots.txt instead if blob URLs are unsupported.
 	if (firefox || ie) {
-		test_link_url = "/robots.txt";
+		if (typeof Blob !== "undefined" && typeof URL !== "undefined") {
+			test_link_url = URL.createObjectURL(new Blob([""], {type: "text/plain"}));
+		} else {
+			test_link_url = "/robots.txt";
+		}
 	}
 	test_link.href = test_link_url;
 	test_frame.addEventListener("load", on_ready, false);
